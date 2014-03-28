@@ -1,8 +1,8 @@
 //---------------------------------------------
 //Shared Global Variables
 
-volatile extern char *display_1;
-volatile extern char *display_2;
+extern char *display_1;
+extern char *display_2;
 volatile extern int ADC_Thumb;
 volatile extern int ADC_LeftIR; 
 volatile extern int ADC_RightIR;

@@ -1,4 +1,4 @@
-"C:\Users\Nathan\Documents\GitHub\ece306-serial-communication\main.c"
+"C:\Users\Nathan\Documents\GitHub\ece306-serial-communication\serial_io.c"
 -std=c99
 -ferror-limit=100
 -I
