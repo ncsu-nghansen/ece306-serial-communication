@@ -1,6 +1,6 @@
 ###############################################################################
 #                                                                             #
-# IAR C/C++ Compiler V5.60.5.50814/W32 for MSP430       27/Mar/2014  22:45:24 #
+# IAR C/C++ Compiler V5.60.5.50814/W32 for MSP430       28/Mar/2014  00:26:03 #
 # Copyright 1996-2013 IAR Systems AB.                                         #
 #                                                                             #
 #    __rt_version  =  3                                                       #
@@ -329,47 +329,46 @@ C:\Users\Nathan\Documents\GitHub\ece306-serial-communication\interrupts.c
      95          		case 0: // Vector 0 - no interrupt
      96          			break;
      97          		case 2: // Vector 2 - RXIFG			
-     98          			RxChars[RxIndex] = UCA1RXBUF; // RX -> USB_Char_Rx character
+     98          			RxChars[RxIndex++] = UCA1RXBUF; // RX -> USB_Char_Rx character
    \                     ??USCI_A1_ISR_2:
    \   000012   1E42EC05     MOV.W   &0x5ec, R14
    \   000016   1F42....     MOV.W   &RxIndex, R15
    \   00001A   CF4E....     MOV.B   R14, RxChars(R15)
-     99          			RxIndex++;
    \   00001E   9253....     ADD.W   #0x1, &RxIndex
-    100          			RxIndex %= sizeof RxChars;
+     99          			RxIndex %= sizeof RxChars;
    \   000022   1C42....     MOV.W   &RxIndex, R12
    \   000026   3E401000     MOV.W   #0x10, R14
    \   00002A   ........     CALLA   #?DivMod16u
    \   00002E   824E....     MOV.W   R14, &RxIndex
-    101          			break;
-    102          		case 4: // Vector 4 – TXIFG
-    103          			break;
-    104          		default: 
-    105          			break;
-    106          	}
-    107          }
+    100          			break;
+    101          		case 4: // Vector 4 – TXIFG
+    102          			break;
+    103          		default: 
+    104          			break;
+    105          	}
+    106          }
    \                     ??USCI_A1_ISR_1:
    \   000032   3C17         POPM.W  #0x4, R15
    \   000034   0013         RETI
    \   000036                REQUIRE _A_UCA1RXBUF_L
    \   000036                REQUIRE UCA1IV
+    107          
     108          
     109          
-    110          
-    111          // ADC10 interrupt service routine
-    112          // ADC_Right_Detector; // A00 ADC10INCH_0 - P1.0
-    113          // ADC_Left_Detector; // A01 ADC10INCH_1 - P1.1
-    114          // ADC_Thumb; // A03 ADC10INCH_3 - P1.3
-    115          // ADC_Temp; // A10 ADC10INCH_10 – Temperature REF module
-    116          // ADC_Bat; // A11 ADC10INCH_11 - Internal
-    117          #pragma vector=ADC10_VECTOR
+    110          // ADC10 interrupt service routine
+    111          // ADC_Right_Detector; // A00 ADC10INCH_0 - P1.0
+    112          // ADC_Left_Detector; // A01 ADC10INCH_1 - P1.1
+    113          // ADC_Thumb; // A03 ADC10INCH_3 - P1.3
+    114          // ADC_Temp; // A10 ADC10INCH_10 – Temperature REF module
+    115          // ADC_Bat; // A11 ADC10INCH_11 - Internal
+    116          #pragma vector=ADC10_VECTOR
 
    \                                 In  segment ISR_CODE, align 2
-    118          __interrupt void ADC10_ISR(void)
+    117          __interrupt void ADC10_ISR(void)
    \                     ADC10_ISR:
-    119          {
+    118          {
    \   000000   0F12         PUSH.W  R15
-    120          	switch(__even_in_range(ADC10IV,12)) 
+    119          	switch(__even_in_range(ADC10IV,12)) 
    \   000002   1F421E07     MOV.W   &0x71e, R15
    \   000006   E00F         ADDA    R15, PC
    \                     `?<Jumptable for ADC10_ISR>_0`:
@@ -380,20 +379,20 @@ C:\Users\Nathan\Documents\GitHub\ece306-serial-communication\interrupts.c
    \   000010   283C         JMP     ??ADC10_ISR_1
    \   000012   273C         JMP     ??ADC10_ISR_1
    \   000014   003C         JMP     ??ADC10_ISR_5
-    121          	{
-    122          		case 0: break; // No interrupt
-    123          		case 2: break; // conversion result overflow
-    124          		case 4: break; // conversion time overflow
-    125          		case 6: break; // ADC10HI
-    126          		case 8: break; // ADC10LO
-    127          		case 10: break; // ADC10IN
-    128          		case 12:
-    129                            
-    130                                  ADC10CTL0 &= ~ADC10ENC;
+    120          	{
+    121          		case 0: break; // No interrupt
+    122          		case 2: break; // conversion result overflow
+    123          		case 4: break; // conversion time overflow
+    124          		case 6: break; // ADC10HI
+    125          		case 8: break; // ADC10LO
+    126          		case 10: break; // ADC10IN
+    127          		case 12:
+    128                            
+    129                                  ADC10CTL0 &= ~ADC10ENC;
    \                     ??ADC10_ISR_5:
    \   000016   A2C30007     BIC.W   #0x2, &0x700
-    131          				
-    132          			switch(AdcChannel)//Put an incrementing break statement to update different channels in turn
+    130          				
+    131          			switch(AdcChannel)//Put an incrementing break statement to update different channels in turn
    \   00001A   1F42....     MOV.W   &AdcChannel, R15
    \   00001E   0F83         SUB.W   #0x0, R15
    \   000020   0524         JEQ     ??ADC10_ISR_2
@@ -402,49 +401,49 @@ C:\Users\Nathan\Documents\GitHub\ece306-serial-communication\interrupts.c
    \   000026   1F83         SUB.W   #0x1, R15
    \   000028   1224         JEQ     ??ADC10_ISR_4
    \   00002A   183C         JMP     ??ADC10_ISR_0
-    133          			{
-    134          				case 0: 
-    135          					ADC_LeftIR = ADC10MEM0;
+    132          			{
+    133          				case 0: 
+    134          					ADC_LeftIR = ADC10MEM0;
    \                     ??ADC10_ISR_2:
    \   00002C   92421207.... MOV.W   &0x712, &ADC_LeftIR
-    136          					ADC10MCTL0 = ADC10INCH_1;
+    135          					ADC10MCTL0 = ADC10INCH_1;
    \   000032   92430A07     MOV.W   #0x1, &0x70a
-    137          					AdcChannel = 1;
+    136          					AdcChannel = 1;
    \   000036   9243....     MOV.W   #0x1, &AdcChannel
-    138          					break;
+    137          					break;
    \   00003A   103C         JMP     ??ADC10_ISR_0
-    139          				case 1:
-    140          					ADC_RightIR = ADC10MEM0;
+    138          				case 1:
+    139          					ADC_RightIR = ADC10MEM0;
    \                     ??ADC10_ISR_3:
    \   00003C   92421207.... MOV.W   &0x712, &ADC_RightIR
-    141          					ADC10MCTL0 = ADC10INCH_3;
+    140          					ADC10MCTL0 = ADC10INCH_3;
    \   000042   B24003000A07 MOV.W   #0x3, &0x70a
-    142          					AdcChannel = 2;
+    141          					AdcChannel = 2;
    \   000048   A243....     MOV.W   #0x2, &AdcChannel
-    143          					break;
+    142          					break;
    \   00004C   073C         JMP     ??ADC10_ISR_0
-    144          				case 2:
-    145          					ADC_Thumb = ADC10MEM0; 
+    143          				case 2:
+    144          					ADC_Thumb = ADC10MEM0; 
    \                     ??ADC10_ISR_4:
    \   00004E   92421207.... MOV.W   &0x712, &ADC_Thumb
-    146          					ADC10MCTL0 = ADC10INCH_0;
+    145          					ADC10MCTL0 = ADC10INCH_0;
    \   000054   82430A07     MOV.W   #0x0, &0x70a
-    147          					AdcChannel = 0;
+    146          					AdcChannel = 0;
    \   000058   8243....     MOV.W   #0x0, &AdcChannel
-    148          					break;
-    149          				default:
-    150          					break;
-    151          			}
-    152                                  
-    153                                  ADC10CTL0 |= ADC10ENC | ADC10SC;
+    147          					break;
+    148          				default:
+    149          					break;
+    150          			}
+    151                                  
+    152                                  ADC10CTL0 |= ADC10ENC | ADC10SC;
    \                     ??ADC10_ISR_0:
    \   00005C   B2D003000007 BIS.W   #0x3, &0x700
-    154                                  break;
-    155                                  
-    156          		default: 
-    157          			break;
-    158          	}
-    159          }
+    153                                  break;
+    154                                  
+    155          		default: 
+    156          			break;
+    157          	}
+    158          }
    \                     ??ADC10_ISR_1:
    \   000062   3F41         POP.W   R15
    \   000064   0013         RETI
@@ -452,61 +451,61 @@ C:\Users\Nathan\Documents\GitHub\ece306-serial-communication\interrupts.c
    \   000066                REQUIRE _A_ADC10MEM0_L
    \   000066                REQUIRE _A_ADC10MCTL0_L
    \   000066                REQUIRE _A_ADC10IV_L
-    160          
-    161          #pragma vector=PORT4_VECTOR
+    159          
+    160          #pragma vector=PORT4_VECTOR
 
    \                                 In  segment ISR_CODE, align 2
-    162          __interrupt void Port_4(void)
+    161          __interrupt void Port_4(void)
    \                     Port_4:
-    163          {
-    164          	if(P4IFG & SW1)
+    162          {
+    163          	if(P4IFG & SW1)
    \   000000   D2B33D02     BIT.B   #0x1, &0x23d
    \   000004   0628         JNC     ??Port_4_0
-    165          	{
-    166          		P4IFG &= ~SW1;
+    164          	{
+    165          		P4IFG &= ~SW1;
    \   000006   D2C33D02     BIC.B   #0x1, &0x23d
-    167          		P1OUT |= IR_LED;
+    166          		P1OUT |= IR_LED;
    \   00000A   E2D20202     BIS.B   #0x4, &0x202
-    168          		PJOUT |= LED1;
+    167          		PJOUT |= LED1;
    \   00000E   92D32203     BIS.W   #0x1, &0x322
-    169          	}
-    170          			
-    171          	if(P4IFG & SW2)
+    168          	}
+    169          			
+    170          	if(P4IFG & SW2)
    \                     ??Port_4_0:
    \   000012   E2B33D02     BIT.B   #0x2, &0x23d
    \   000016   0628         JNC     ??Port_4_1
-    172          	{
-    173          		P4IFG &= ~SW2;
+    171          	{
+    172          		P4IFG &= ~SW2;
    \   000018   E2C33D02     BIC.B   #0x2, &0x23d
-    174          		P1OUT &= ~IR_LED;
+    173          		P1OUT &= ~IR_LED;
    \   00001C   E2C20202     BIC.B   #0x4, &0x202
-    175          		PJOUT &= ~LED1;
+    174          		PJOUT &= ~LED1;
    \   000020   92C32203     BIC.W   #0x1, &0x322
-    176          	}		
-    177          }
+    175          	}		
+    176          }
    \                     ??Port_4_1:
    \   000024   0013         RETI
    \   000026                REQUIRE _A_PBIFG_L
    \   000026                REQUIRE _A_PAOUT_L
    \   000026                REQUIRE _A_PJOUT_L
-    178          
-    179          #pragma vector=TIMER0_A0_VECTOR
+    177          
+    178          #pragma vector=TIMER0_A0_VECTOR
 
    \                                 In  segment ISR_CODE, align 2
-    180          __interrupt void Timer0_A0(void)
+    179          __interrupt void Timer0_A0(void)
    \                     Timer0_A0:
-    181          {
-    182          	P3OUT ^= TEST_PROBE;
+    180          {
+    181          	P3OUT ^= TEST_PROBE;
    \   000000   F2E22202     XOR.B   #0x8, &0x222
-    183          	TimeMsec++;
+    182          	TimeMsec++;
    \   000004   9253....     ADD.W   #0x1, &TimeMsec
-    184                  
-    185                  if(MotorTimer > 0)
+    183                  
+    184                  if(MotorTimer > 0)
    \   000008   9293....     CMP.W   #0x1, &MotorTimer
    \   00000C   0238         JL      ??Timer0_A0_0
-    186                    MotorTimer--;
+    185                    MotorTimer--;
    \   00000E   B253....     ADD.W   #0xffff, &MotorTimer
-    187          }
+    186          }
    \                     ??Timer0_A0_0:
    \   000012   0013         RETI
    \   000014                REQUIRE _A_PBOUT_L
@@ -534,37 +533,37 @@ C:\Users\Nathan\Documents\GitHub\ece306-serial-communication\interrupts.c
    \                                 In  segment DATA16_ID, align 2, align-sorted
    \                     `?<Initializer for sw2Debounce>`:
    \   000000   FFFF         DC16 -1
-    188          
-    189          /*
-    190          #pragma vector=TIMER0_A1_VECTOR
-    191          __interrupt void Timer0_A1(void)
-    192          {
-    193          	P4IE |= SW1 | SW2;
-    194                  PJOUT &= ~LED3;   		 //Turn off debouce LED
+    187          
+    188          /*
+    189          #pragma vector=TIMER0_A1_VECTOR
+    190          __interrupt void Timer0_A1(void)
+    191          {
+    192          	P4IE |= SW1 | SW2;
+    193                  PJOUT &= ~LED3;   		 //Turn off debouce LED
+    194            
     195            
     196            
-    197            
-    198                  switch(TA0IV)
-    199          	{
-    200          		case 2: 					//CCR1
-    201          			if( !(P4IE & SW1) ) 	//sw1 was disabled
-    202          				P4IE |= SW1;
-    203          			else if( !(P4IE & SW2) ) //sw2 was disabled
-    204          				P4IE |= SW2;
-    205          			
-    206                            
-    207                                  P4IE |= SW1 | SW2;
-    208          			PJOUT &= ~LED4;   		 //Turn off debouce LED
-    209          			TA0CCTL1 &= ~CCIE; 		 //Turn off this interrupt
-    210          			break;
-    211          			
-    212          		case 4:						//CCR2
-    213          			break;
-    214          			
-    215          		default:
-    216          			break;
-    217          	}
-    218          }*/
+    197                  switch(TA0IV)
+    198          	{
+    199          		case 2: 					//CCR1
+    200          			if( !(P4IE & SW1) ) 	//sw1 was disabled
+    201          				P4IE |= SW1;
+    202          			else if( !(P4IE & SW2) ) //sw2 was disabled
+    203          				P4IE |= SW2;
+    204          			
+    205                            
+    206                                  P4IE |= SW1 | SW2;
+    207          			PJOUT &= ~LED4;   		 //Turn off debouce LED
+    208          			TA0CCTL1 &= ~CCIE; 		 //Turn off this interrupt
+    209          			break;
+    210          			
+    211          		case 4:						//CCR2
+    212          			break;
+    213          			
+    214          		default:
+    215          			break;
+    216          	}
+    217          }*/
 
    Maximum stack usage in bytes:
 

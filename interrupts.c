@@ -95,8 +95,7 @@ __interrupt void USCI_A1_ISR(void)
 		case 0: // Vector 0 - no interrupt
 			break;
 		case 2: // Vector 2 - RXIFG			
-			RxChars[RxIndex] = UCA1RXBUF; // RX -> USB_Char_Rx character
-			RxIndex++;
+			RxChars[RxIndex++] = UCA1RXBUF; // RX -> USB_Char_Rx character
 			RxIndex %= sizeof RxChars;
 			break;
 		case 4: // Vector 4 – TXIFG
